@@ -8,6 +8,17 @@ from flask import (Flask, redirect, render_template, request, jsonify,
 app = Flask(__name__)
 
 
+# Load environment variables
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
+
+twilio_flow_url = "https://studio.twilio.com/v1/Flows/FW022404f843d5130ad59e7f5d7d795cd7/Executions"
+vendor_db = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXZyMHpMTjdDeWhnYU1neXFGZ1c3UVlrM2ZyQVE_ZT1GSWludnU/root/content"
+response = requests.get(vendor_db)
+vendors = response.json()
+
+
+
 @app.route('/')
 def index():
    print('Request for index page received')
@@ -37,8 +48,6 @@ def notify():
     order_data = request.get_data(as_text=True)
     order_json = json.loads(order_data)
     vendorId = order_json["line_items"][0]["meta_data"][0]["value"]
-    result = {"vendor_id": vendorId}
-    app.logger.info(result)
 
     if vendorId in vendors:
       phone_number = vendors[vendorId]
