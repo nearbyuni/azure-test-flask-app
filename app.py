@@ -1,5 +1,7 @@
 import os
-
+import requests
+import logging
+import json
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 
@@ -17,15 +19,33 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/hello', methods=['POST'])
-def hello():
-   name = request.form.get('name')
+def webhook():
+  if request.method == "GET":
+    return jsonify({'message': 'Welcome to Misa Express!'}), 200
+  if request.method == "POST":
+    order_data = request.get_data(as_text=True)
+    order_json = json.loads(order_data)
+    vendorId = order_json["line_items"][0]["meta_data"][0]["value"]
+    result = {"vendor_id": vendorId}
+    app.logger.info(result)
 
-   if name:
-       print('Request for hello page received with name=%s' % name)
-       return render_template('hello.html', name = name)
-   else:
-       print('Request for hello page received with no name or blank name -- redirecting')
-       return redirect(url_for('index'))
+    if vendorId in vendors:
+      phone_number = vendors[vendorId]
+      data = {"To": phone_number, "From": "+14845597055"}
+
+      auth = (AC1b843a5a08f3e3549fd5602232ce30e3, AC1b843a5a08f3e3549fd5602232ce30e3
+              )  # Use environment variables
+
+      response = requests.post(twilio_flow_url, data=data, auth=auth)
+
+      if response.status_code == 200:
+        return jsonify({'message': 'ERROR!'}), 200
+      else:
+        return jsonify({'message': 'ERROR!'}), 500
+    else:
+      return "Vendor ID not found", 404
+  else:
+    return jsonify({'message': 'ERROR!'}), 100
 
 
 if __name__ == '__main__':
