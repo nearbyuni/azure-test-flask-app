@@ -12,7 +12,7 @@ app = Flask(__name__)
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
-twilio_flow_url = "https://studio.twilio.com/v1/Flows/FW022404f843d5130ad59e7f5d7d795cd7/Executions"
+twilio_flow_url = "https://studio.twilio.com/v1/Flows/FW563f040ea706b6677eef8fdfd345ff3c/Executions"
 vendor_db = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXZyMHpMTjdDeWhnYU1neXFGZ1c3UVlrM2ZyQVE_ZT1GSWludnU/root/content"
 response = requests.get(vendor_db)
 vendors = response.json()
@@ -53,13 +53,12 @@ def notify():
       phone_number = vendors[vendorId]
       data = {"To": phone_number, "From": "+14845597055"}
 
-      auth = (AC1b843a5a08f3e3549fd5602232ce30e3, AC1b843a5a08f3e3549fd5602232ce30e3
-              )  # Use environment variables
+      auth = ("AC1b843a5a08f3e3549fd5602232ce30e3", "9899b5b053d9e916e3f616f060480911")
 
       response = requests.post(twilio_flow_url, data=data, auth=auth)
 
       if response.status_code == 200:
-        return jsonify({'message': 'ERROR!'}), 200
+        return jsonify({'message': 'SUCCESS!'}), 200
       else:
         return jsonify({'message': 'ERROR!'}), 500
     else:
