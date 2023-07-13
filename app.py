@@ -1,8 +1,8 @@
 import os
 import requests
-import logging
 import json
-from flask import (Flask, redirect, render_template, request,
+import logging
+from flask import (Flask, redirect, render_template, request, jsonify,
                    send_from_directory, url_for)
 
 app = Flask(__name__)
@@ -19,7 +19,18 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/hello', methods=['POST'])
-def webhook():
+def hello():
+   name = request.form.get('name')
+
+   if name:
+       print('Request for hello page received with name=%s' % name)
+       return render_template('hello.html', name = name)
+   else:
+       print('Request for hello page received with no name or blank name -- redirecting')
+       return redirect(url_for('index'))
+
+@app.route('/notify-vendor', methods=['GET','POST'])
+def notify():
   if request.method == "GET":
     return jsonify({'message': 'Welcome to Misa Express!'}), 200
   if request.method == "POST":
@@ -46,6 +57,7 @@ def webhook():
       return "Vendor ID not found", 404
   else:
     return jsonify({'message': 'ERROR!'}), 100
+
 
 
 if __name__ == '__main__':
