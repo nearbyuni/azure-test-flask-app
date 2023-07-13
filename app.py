@@ -53,7 +53,7 @@ def notify():
       phone_number = vendors[vendorId]
       data = {"To": phone_number, "From": "+14845597055"}
 
-      auth = ("AC1b843a5a08f3e3549fd5602232ce30e3", "9899b5b053d9e916e3f616f060480911")
+      auth = ("AC1b843a5a08f3e3549fd5602232ce30e3", "972bbcb94892ac8c484c7e9e2156fac3")
 
       response = requests.post(twilio_flow_url, data=data, auth=auth)
 
