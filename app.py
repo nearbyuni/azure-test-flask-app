@@ -13,7 +13,7 @@ TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 twilio_flow_url = "https://studio.twilio.com/v1/Flows/FW563f040ea706b6677eef8fdfd345ff3c/Executions"
-vendor_db = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXZyMHpMTjdDeWhnYU1neXFGZ1c3UVlrM2ZyQVE_ZT1GSWludnU/root/content"
+vendor_db = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXZyMHpMTjdDeWhnYU1nb2hmSTVaUnFnLThFVnc/root/content"
 response = requests.get(vendor_db)
 vendors = response.json()
 
